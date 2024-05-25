@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Phone List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+
+        .card-container {
+            margin-left: 120px;
+            max-width: 100%;
+        }
+        .card{
+            box-shadow: 0 14px 28px rgba(193, 192, 192, 0.25), 0 10px 10px rgba(146, 145, 145, 0.22);
+            overflow: hidden;
+            width: 400px;
+            margin-top: 90px;
+          
+        }
+        .card-img-top{
+            width: 250px;
+            height: 250px;
+           
+            
+        }
+        .btn-detail{ 
+        border-radius: 0%;
+            font-family: 'Urbanist';
+            font-size: 14px;
+            font-weight: 700;
+            padding: 2px 6px;
+            color:#0ac943;
+            border-color: #13531c;
+            background-color: #925555;
+            border: 2px solid;
+            cursor: pointer;
+            text-decoration: none;
+                 margin-left: 10px;}
+            .btn-detail:hover{
+            color: #fff;
+            border: 2px solid; 
+            border-color: #0cef58;
+            background-color: #0cef58;
+        }
+        .card-parg{
+            color: rgb(20, 19, 19);
+            font-family: 'Urbanist';
+            font-size: 18px;
+            font-weight: 500;
+           
+        }
+        .card-title{
+            color: gray;
+            font-family: 'Urbanist';
+            font-size: 18px;
+            font-weight: 400;
+        }
+        .card-text{
+            font-family: 'Urbanist';
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .error-postion{
+            font-family: 'Urbanist';
+    font-size: 50px;
+    font-weight: 700;
+    margin-top: 200px;
+    margin-left: 448px;
+        }
+        input{
+            height: 42px;
+    width: 418px;
+    padding: 0px 38px;/*was 5px */
+    border-radius: 0%;
+    font: size 25px;px;
+    font-family: Urbanist;
+    font-weight: 500;
+    border-color: #0cef58;
+        }
+        input:focus{
+    outline: none;
+}
+.fom-pos{
+    margin-top: 75px;
+    margin-left: 165px;
+}
+.apply-btn{
+    border-radius: 0%;
+    font-family: 'Urbanist';
+    color:#fff;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 8.5px 25px;
+    background-color: #0cef58;
+    border-color: #0cef58;
+    border: 2px solid; 
+    cursor: pointer;
+  
+}
+.apply-btn:hover{
+    color:#0cef58;
+    border-color: #0cef58;
+    border: 2px solid; 
+    background-color: #fff;}
+label{
+    font-family: 'Urbanist';
+    font-size: 20px;
+    font-weight: 700;
+}
+select {
+    height: 42px;
+    width: 418px;
+    padding: 0px 38px;
+    border-radius: 0%;
+    font-size: 25px;
+    font-family: 'Urbanist';
+    font-weight: 500;
+    border-color: #0cef58;
+}
+
+select:focus {
+    outline: none;
+}
+    </style>
+</head>
+<body>
+    <form class="fom-pos" method="POST" action="">
+        {% csrf_token %}
+        <select id="brand" name="brand">
+            <option value="">Select a brand</option>
+            {% for brand in brands %}
+            <option value="{{ brand }}" {% if brand == request.POST.brand %}selected{% endif %}>{{ brand }}</option>
+            {% endfor %}
+        </select>
+        <input type="number" id="max_price" name="max_price" placeholder="Enter here max Price..." value="{{ request.POST.max_price }}">
+        <button class="apply-btn" type="submit">Apply Filter</button>
+    </form>  
+    
+    
+    <div class="row row-cols-1 row-cols-md-3 g-4 card-container">
+        {% for phone in phones %}
+        <div class="col">
+            <div class="card" style="width: 18rem;">
+                <img src="{{ phone.img_url }}" class="card-img-top" alt="Phone Image">
+                <div class="card-body">
+                    <h5 class="card-title">{{ phone.nom_tel }}</h5>
+                    <p class="card-text"> Brand: <span class="card-parg">  {{ phone.marque }}</span></p>
+                    <p class="card-text"> Price:  <span class="card-parg">  {{ phone.prix }} TND</span></p>
+                    <a href="{{ phone.link }}" class="btn btn-detail" target="_blank">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="error-postion text-danger">No results found.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
